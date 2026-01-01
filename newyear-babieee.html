@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy New Year Babieee ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    min-height:100vh;
+    background: linear-gradient(135deg,#ff4e50,#f9d423,#24c6dc,#514a9d);
+    background-size:400% 400%;
+    animation:gradient 12s ease infinite;
+    font-family:'Poppins',sans-serif;
+    color:white;
+    text-align:center;
+    overflow-x:hidden;
+}
+
+@keyframes gradient {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.container {
+    padding:25px 15px;
+    max-width:900px;
+    margin:auto;
+}
+
+h1 {
+    font-family:'Pacifico',cursive;
+    font-size:clamp(2.5rem,6vw,3.8rem);
+    margin-top:30px;
+    text-shadow:0 0 20px rgba(255,255,255,0.9);
+}
+
+h2 {
+    margin-top:10px;
+    font-size:clamp(1.4rem,4vw,2.2rem);
+    color:#ffeaa7;
+}
+
+.hint {
+    margin-top:10px;
+    opacity:0.7;
+    font-size:0.9rem;
+}
+
+.typewriter {
+    margin-top:30px;
+    font-size:clamp(1.05rem,3.5vw,1.3rem);
+    line-height:1.8;
+    min-height:200px;
+}
+
+.surprise {
+    display:none;
+    margin-top:35px;
+    font-family:'Pacifico',cursive;
+    font-size:clamp(1.8rem,5vw,2.6rem);
+    color:#ffdde1;
+    text-shadow:0 0 15px rgba(255,255,255,0.8);
+}
+
+footer {
+    margin-top:40px;
+    font-size:1.1rem;
+    color:#ffd6e0;
+}
+
+.heart {
+    position:absolute;
+    animation:float 6s linear infinite;
+}
+
+@keyframes float {
+    0%{transform:translateY(100vh) scale(0.6);opacity:1}
+    100%{transform:translateY(-10vh) scale(1.4);opacity:0}
+}
+
+canvas {
+    position:fixed;
+    top:0; left:0;
+    pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div class="container">
+    <h1>Happy New Year ❤️</h1>
+    <h2>My Babieee ✨</h2>
+    <div class="hint">💖 Tap anywhere to begin the magic</div>
+
+    <div class="typewriter" id="typewriter"></div>
+
+    <div class="surprise" id="surprise">
+        I still choose you.  
+        Every year. Every lifetime. 💍💖
+    </div>
+
+    <footer>Forever Yours 💞 — 2026</footer>
+</div>
+
+<!-- 🎵 AUDIO -->
+<audio id="bgMusic" preload="auto">
+    <source src="jvke-her.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* 💓 Heartbeat vibration */
+function heartbeat() {
+    if (navigator.vibrate) {
+        navigator.vibrate([120,80,120]);
+    }
+}
+
+/* 💌 Typewriter */
+const message = `
+Babieee… ❤️
+
+As this new year begins, I just want you to know
+that you are my favorite feeling, my happiest thought,
+and my forever person.
+
+You turn ordinary moments into memories,
+and every heartbeat of mine somehow knows your name.
+
+This year, and every year after,
+I promise to choose you,
+to love you deeper,
+and to hold your hand no matter what.
+
+Happy New Year, Babieee 💖
+`;
+
+let i = 0;
+const speed = 45;
+const typeDiv = document.getElementById("typewriter");
+
+function startTyping() {
+    function type() {
+        if (i < message.length) {
+            typeDiv.innerHTML += message.charAt(i);
+            if (i % 15 === 0) heartbeat();
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
+
+/* 🎵 MUSIC FIX (GUARANTEED) */
+const music = document.getElementById("bgMusic");
+let started = false;
+
+function startExperience() {
+    if (started) return;
+    started = true;
+
+    music.muted = false;
+    music.volume = 0;
+
+    const playPromise = music.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            let v = 0;
+            const fade = setInterval(() => {
+                v += 0.05;
+                if (v >= 1) {
+                    v = 1;
+                    clearInterval(fade);
+                    music.loop = true;
+                }
+                music.volume = v;
+            }, 150);
+        }).catch(() => {
+            alert("Tap once more to start the music 💖");
+            started = false;
+        });
+    }
+
+    startTyping();
+    heartbeat();
+
+    document.removeEventListener("click", startExperience);
+    document.removeEventListener("touchstart", startExperience);
+}
+
+document.addEventListener("click", startExperience);
+document.addEventListener("touchstart", startExperience);
+
+/* 🎁 Surprise when song ends */
+music.addEventListener("ended", () => {
+    document.getElementById("surprise").style.display = "block";
+});
+
+/* ❤️ Floating hearts */
+function createHeart(){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=Math.random()*20+15+"px";
+    h.style.animationDuration=Math.random()*3+4+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),7000);
+}
+setInterval(createHeart,300);
+
+/* 🎆 Fireworks */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+let particles=[];
+
+function firework(x,y){
+    for(let i=0;i<50;i++){
+        particles.push({
+            x,y,
+            a:Math.random()*Math.PI*2,
+            s:Math.random()*4+2,
+            o:1,
+            c:`hsl(${Math.random()*360},100%,60%)`
+        });
+    }
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach((p,i)=>{
+        p.x+=Math.cos(p.a)*p.s;
+        p.y+=Math.sin(p.a)*p.s;
+        p.o-=0.01;
+        ctx.globalAlpha=p.o;
+        ctx.fillStyle=p.c;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,3,0,Math.PI*2);
+        ctx.fill();
+        if(p.o<=0) particles.splice(i,1);
+    });
+    requestAnimationFrame(animate);
+}
+
+setInterval(()=>{
+    firework(Math.random()*canvas.width,Math.random()*canvas.height/2);
+},1200);
+
+animate();
+window.onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;}
+</script>
+
+</body>
+</html>

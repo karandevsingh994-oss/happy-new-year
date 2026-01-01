@@ -168,23 +168,13 @@ function startExperience() {
     started = true;
 
     music.muted = false;
-    music.volume = 1;
+    music.volume = 0.5;   // ⚠️ NEVER 0 on Android
+    music.loop = true;
 
     const playPromise = music.play();
 
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            let v = 0;
-            const fade = setInterval(() => {
-                v += 0.05;
-                if (v >= 1) {
-                    v = 1;
-                    clearInterval(fade);
-                    music.loop = true;
-                }
-                music.volume = v;
-            }, 150);
-        }).catch(() => {
+    if (playPromise) {
+        playPromise.catch(() => {
             alert("Tap once more to start the music 💖");
             started = false;
         });
@@ -197,8 +187,9 @@ function startExperience() {
     document.removeEventListener("touchstart", startExperience);
 }
 
-document.addEventListener("click", startExperience);
-document.addEventListener("touchstart", startExperience);
+document.addEventListener("touchstart", startExperience, { once: true });
+document.addEventListener("click", startExperience, { once: true });
+
 
 /* 🎁 Surprise when song ends */
 music.addEventListener("ended", () => {
@@ -263,4 +254,5 @@ window.onresize=()=>{canvas.width=innerWidth;canvas.height=innerHeight;}
 
 </body>
 </html>
+
 
